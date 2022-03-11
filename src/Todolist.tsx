@@ -1,9 +1,11 @@
 import React, {useState, ChangeEvent, KeyboardEvent} from 'react';
-import {FilterValueType} from './App';
+
 import {AddItemForm} from './components/AddItemForm';
 import {EditableSpan} from './components/EditableSpan';
 import {Button, Checkbox, IconButton} from '@material-ui/core';
 import {Delete} from '@material-ui/icons';
+import {FilterValueType} from './AppWithRedux';
+
 
 
 export type TaskType = {
@@ -12,14 +14,15 @@ export type TaskType = {
     isDone: boolean
 }
 
+
 type TodolistPropsType = {
     todolistID: string
     title: string
     tasks: Array<TaskType>
     removeTask: (todolistID: string, taskId: string) => void;
-    changeFilter: (todolistID: string, value: FilterValueType) => void;
+    changeFilter: (todolistID: string,value: FilterValueType) => void;
     addTask: (todolistID: string, title: string) => void;
-    changeStatus: (todolistID: string, id: string, isDone: boolean) => void;
+    changeStatus: (id: string, isDone: boolean, todolistID: string) => void;
     filter: FilterValueType;
     removeTodolist: (todolistID: string) => void
     updateTask: (todolistID: string, id: string, title: string) => void
@@ -72,7 +75,7 @@ const Todolist = (props: TodolistPropsType) => {
                     }
                     const onStatusChange = (e: ChangeEvent<HTMLInputElement>) => {
                         let newIsDoneValue = e.currentTarget.checked;
-                        props.changeStatus(props.todolistID, t.id, newIsDoneValue)
+                        props.changeStatus(t.id, newIsDoneValue,props.todolistID)
                     }
                     return (
                         <div key={t.id} className={t.isDone ? 'is-done' : ''}>
